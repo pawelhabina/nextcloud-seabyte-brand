@@ -102,6 +102,11 @@ $ClientBuild = Join-Path $BuildRoot "$CraftTarget\build\nextcloud-client\work\bu
 if (-not (Test-Path $ClientBuild)) {
     throw "Expected client build directory not found: $ClientBuild"
 }
+$CraftBin = Join-Path $BuildRoot "$CraftTarget\bin"
+if (-not (Test-Path $CraftBin)) {
+    throw "Expected KDE Craft runtime directory not found: $CraftBin"
+}
+$env:Path = "$CraftBin;$env:Path"
 
 if (-not $SkipTests) {
     & ctest --test-dir $ClientBuild --output-on-failure --timeout 300

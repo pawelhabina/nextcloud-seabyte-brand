@@ -13,7 +13,7 @@ namespace OCC
 
 QUrl socketApiSocketUrl()
 {
-    NSString *appGroupId = [NSString stringWithFormat:@"%@.%@", @DEVELOPMENT_TEAM, @APPLICATION_REV_DOMAIN];
+    NSString *appGroupId = @MACOS_APP_GROUP;
     NSURL *container = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroupId];
     NSURL *socket = [container URLByAppendingPathComponent:@"s" isDirectory:NO];
 

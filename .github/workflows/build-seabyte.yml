@@ -78,13 +78,13 @@ jobs:
         with:
           python-version: "3.12"
       - name: Restore KDE Craft
-        uses: actions/cache@v4
+        id: windows-craft-cache
+        uses: actions/cache/restore@v4
         with:
           path: |
             C:\Craft\SeaByte
           key: windows-seabyte-craft-${{ hashFiles('craftmaster.ini', 'branding/seabyte-branding.cmake', 'scripts/build-windows.ps1') }}
           restore-keys: windows-seabyte-craft-
-          save-always: true
       - name: Import Authenticode certificate
         if: ${{ env.WINDOWS_PFX_BASE64 != '' && env.WINDOWS_PFX_PASSWORD != '' }}
         shell: pwsh
@@ -98,6 +98,13 @@ jobs:
       - name: Build, test and package
         shell: pwsh
         run: ./scripts/build-windows.ps1
+      - name: Save KDE Craft
+        if: ${{ always() && steps.windows-craft-cache.outputs.cache-hit != 'true' }}
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            C:\Craft\SeaByte
+          key: windows-seabyte-craft-${{ hashFiles('craftmaster.ini', 'branding/seabyte-branding.cmake', 'scripts/build-windows.ps1') }}
       - name: Upload Windows artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -127,7 +134,8 @@ jobs:
         with:
           python-version: "3.12"
       - name: Restore KDE Craft
-        uses: actions/cache@v4
+        id: macos-craft-cache
+        uses: actions/cache/restore@v4
         with:
           path: .build/macos
           key: macos-${{ inputs.mac_arch || 'arm64' }}-seabyte-craft-${{ hashFiles('craftmaster.ini', 'branding/seabyte-branding.cmake') }}
@@ -151,6 +159,12 @@ jobs:
           rm -f "$certificate_path"
       - name: Build, test and package
         run: ./scripts/build-macos.sh --arch "$SEABYTE_MAC_ARCH"
+      - name: Save KDE Craft
+        if: ${{ always() && steps.macos-craft-cache.outputs.cache-hit != 'true' }}
+        uses: actions/cache/save@v4
+        with:
+          path: .build/macos
+          key: macos-${{ inputs.mac_arch || 'arm64' }}-seabyte-craft-${{ hashFiles('craftmaster.ini', 'branding/seabyte-branding.cmake') }}
       - name: Upload macOS artifacts
         uses: actions/upload-artifact@v4
         with:

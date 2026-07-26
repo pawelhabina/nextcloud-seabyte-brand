@@ -234,6 +234,7 @@ def check_platform_ids(checks: Checks) -> None:
         '@WINDOWS_APP_ID@',
     )
     checks.contains("src/gui/application.cpp", "SetCurrentProcessExplicitAppUserModelID")
+    checks.contains("src/gui/socketapi/socketapi_mac.mm", "NSString *appGroupId = @MACOS_APP_GROUP;")
 
     # Render the main plist with representative values and verify that it is
     # valid XML/plist after CMake substitution.
@@ -339,6 +340,7 @@ def check_build_automation(checks: Checks) -> None:
         "windows-msvc2022_64-cl",
         "stable-33.0",
         "SeaByte-Cloud-Setup-x64-",
+        '$env:Path = "$CraftBin;$env:Path"',
         "SEABYTE_WINDOWS_CERT_SHA1",
         "SHA256SUMS",
     )
@@ -356,6 +358,8 @@ def check_build_automation(checks: Checks) -> None:
         "Windows x64 MSI",
         "macOS package",
         "Regenerate and verify branding",
+        "actions/cache/restore@v4",
+        "actions/cache/save@v4",
         "actions/upload-artifact@v4",
     )
     checks.contains(
