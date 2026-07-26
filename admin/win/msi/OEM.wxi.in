@@ -19,6 +19,8 @@
     <?define AppInfoLink = "$(var.AppHelpLink)" ?>
 	
 	<?define AppCommandOpenUrlScheme = "@APPLICATION_URI_HANDLER_SCHEME@" ?>
+	<?define AppCommandOpenUrlAlias = "@BRAND_URI_HANDLER_ALIAS@" ?>
+    <?define AppUserModelId = "@WINDOWS_APP_ID@" ?>
 
     <!-- Custom license: To use it, also remove the "Skip the license page" stuff in the <UI> section
                          and uncomment <WixVariable Id="WixUILicenseRtf"...

@@ -78,10 +78,10 @@ SPDX-FileCopyrightText = "SPDX-FileCopyrightText: 2015 ownCloud GmbH, 2023 Nextc
 SPDX-License-Identifier = "LGPL-2.1-or-later"
 
 [[annotations]]
-path = ["shell_integration/windows/NCOverlays/ico/Error.ico", "shell_integration/windows/NCOverlays/ico/OK.ico", "shell_integration/windows/NCOverlays/ico/OK_Shared.ico", "shell_integration/windows/NCOverlays/ico/Sync.ico", "shell_integration/windows/NCOverlays/ico/Warning.ico", ""]
+path = ["shell_integration/windows/NCOverlays/ico/Error.ico", "shell_integration/windows/NCOverlays/ico/OK.ico", "shell_integration/windows/NCOverlays/ico/OK_Shared.ico", "shell_integration/windows/NCOverlays/ico/Sync.ico", "shell_integration/windows/NCOverlays/ico/Warning.ico"]
 precedence = "aggregate"
-SPDX-FileCopyrightText = "2016 ownCloud GmbH"
-SPDX-License-Identifier = "LGPL-2.1-or-later"
+SPDX-FileCopyrightText = "2026 SeaByte"
+SPDX-License-Identifier = "LicenseRef-SeaByte-Brand-Assets"
 
 [[annotations]]
 path = ["doc/images/main_dialog_christine.png"]

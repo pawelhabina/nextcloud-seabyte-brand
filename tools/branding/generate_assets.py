@@ -283,6 +283,17 @@ def main() -> None:
         overlay = status_icon(symbol, 256, state, "colored")
         overlay.save(overlay_dir / f"SeaByte-{state}.ico", format="ICO", sizes=[(size, size) for size in ICO_SIZES])
 
+    shell_overlay_dir = ROOT / "shell_integration" / "windows" / "NCOverlays" / "ico"
+    shell_overlay_sources = {
+        "Error.ico": "SeaByte-error.ico",
+        "OK.ico": "SeaByte-ok.ico",
+        "OK_Shared.ico": "SeaByte-ok.ico",
+        "Sync.ico": "SeaByte-sync.ico",
+        "Warning.ico": "SeaByte-warning.ico",
+    }
+    for destination, source in shell_overlay_sources.items():
+        shutil.copyfile(overlay_dir / source, shell_overlay_dir / destination)
+
     save_png(fit(symbol, 512, 512, 0.08), GENERATED / "macos-file-provider.png")
     save_png(fit(symbol, 512, 512, 0.08), GENERATED / "macos-finder-extension.png")
 

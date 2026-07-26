@@ -19,7 +19,7 @@ packages from `tools/branding/requirements.txt`. The script only reads
 | `seabyte-only-logo.svg` | `theme/colored/SeaByte-sidebar.svg` | Finder sidebar source |
 | `seabyte-only-logo.svg` | `theme/{colored,black,white}/seabyte/state-*` | Branded tray/menu-bar sync states, including monochrome variants |
 | `seabyte-only-logo.svg` | `branding/generated/macos-template/*` | macOS menu-bar template references |
-| `seabyte-only-logo.svg` | `branding/generated/windows-overlays/*.ico` | Explorer overlay references |
+| `seabyte-only-logo.svg` | `branding/generated/windows-overlays/*.ico`, `shell_integration/windows/NCOverlays/ico/*.ico` | Explorer overlay resources |
 | `seabyte-only-logo.svg` | `branding/generated/macos-file-provider.png`, `macos-finder-extension.png` | File Provider and Finder extension artwork |
 | `seabyte-full-logo.svg` | `theme/colored/wizard_logo.svg`, `.png`, `@2x.png` | Account wizard |
 | `seabyte-full-logo.svg` | `admin/win/msi/gui/banner.bmp`, `dialog.bmp` | WiX MSI user interface |
@@ -30,4 +30,3 @@ packages from `tools/branding/requirements.txt`. The script only reads
 The build still lets ECM create its native `.ico` and `.icns` files from the
 same checked-in SVG/PNG set. The files under `branding/generated` are produced
 as independently testable canonical references.
-
