@@ -94,6 +94,9 @@ endif()
 # Avoid importing or migrating settings belonging to Nextcloud Desktop.
 set(APPLICATION_DISPLAY_LEGACY_IMPORT_DIALOG OFF CACHE BOOL "Display legacy import dialog" FORCE)
 set(DISABLE_ACCOUNT_MIGRATION ON CACHE BOOL "Disable account migration" FORCE)
+if(WIN32)
+    set(BUILD_WIN_MSI ON CACHE BOOL "Build the SeaByte WiX MSI integration" FORCE)
+endif()
 
 # Brand colours and generated resources.
 set(NEXTCLOUD_BACKGROUND_COLOR "#2c89b9" CACHE STRING "SeaByte primary colour" FORCE)

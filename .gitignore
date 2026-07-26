@@ -15,6 +15,9 @@ admin/win/nsi/l10n/pofiles/*.po
 *.swo
 *~$
 build*
+!scripts/build-macos.sh
+!scripts/build-windows.ps1
+!.github/workflows/build-seabyte.yml
 cscope.*
 tags
 t1.cfg

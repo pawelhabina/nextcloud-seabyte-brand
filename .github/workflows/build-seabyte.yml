@@ -1,0 +1,158 @@
+# SPDX-FileCopyrightText: 2026 SeaByte
+# SPDX-License-Identifier: GPL-2.0-or-later
+
+name: SeaByte release builds
+
+on:
+  workflow_dispatch:
+    inputs:
+      mac_arch:
+        description: macOS architecture
+        required: true
+        default: arm64
+        type: choice
+        options:
+          - arm64
+          - universal2
+  pull_request:
+    paths:
+      - branding/**
+      - theme/**
+      - src/**
+      - admin/**
+      - shell_integration/**
+      - scripts/**
+      - tools/branding/**
+      - .github/workflows/build-seabyte.yml
+      - CMakeLists.txt
+      - NEXTCLOUD.cmake
+      - config.h.in
+  push:
+    tags:
+      - seabyte-v*
+
+permissions:
+  contents: read
+
+concurrency:
+  group: seabyte-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  branding:
+    name: Branding acceptance
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: tools/branding/requirements.txt
+      - name: Install deterministic asset dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes libcairo2
+          python -m pip install --requirement tools/branding/requirements.txt
+      - name: Regenerate and verify branding
+        run: |
+          python tools/branding/generate_assets.py
+          python tools/branding/check_branding.py
+          git diff --exit-code
+
+  windows:
+    name: Windows x64 MSI
+    needs: branding
+    runs-on: windows-2022
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Restore KDE Craft
+        uses: actions/cache@v4
+        with:
+          path: |
+            .build/windows
+            windows-msvc2022_64-cl
+          key: windows-seabyte-craft-${{ hashFiles('craftmaster.ini', 'branding/seabyte-branding.cmake') }}
+          restore-keys: windows-seabyte-craft-
+      - name: Import Authenticode certificate
+        if: ${{ secrets.WINDOWS_PFX_BASE64 != '' && secrets.WINDOWS_PFX_PASSWORD != '' }}
+        shell: pwsh
+        env:
+          WINDOWS_PFX_BASE64: ${{ secrets.WINDOWS_PFX_BASE64 }}
+          WINDOWS_PFX_PASSWORD: ${{ secrets.WINDOWS_PFX_PASSWORD }}
+        run: |
+          $pfxPath = Join-Path $env:RUNNER_TEMP "seabyte-signing.pfx"
+          [IO.File]::WriteAllBytes($pfxPath, [Convert]::FromBase64String($env:WINDOWS_PFX_BASE64))
+          $password = ConvertTo-SecureString $env:WINDOWS_PFX_PASSWORD -AsPlainText -Force
+          $certificate = Import-PfxCertificate -FilePath $pfxPath -CertStoreLocation Cert:\CurrentUser\My -Password $password
+          Remove-Item $pfxPath -Force
+          "SEABYTE_WINDOWS_CERT_SHA1=$($certificate.Thumbprint)" | Out-File $env:GITHUB_ENV -Encoding utf8 -Append
+      - name: Build, test and package
+        shell: pwsh
+        run: ./scripts/build-windows.ps1
+      - name: Upload Windows artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: SeaByte-Cloud-Windows-x64
+          path: dist/windows/**
+          if-no-files-found: error
+
+  macos:
+    name: macOS package
+    needs: branding
+    runs-on: macos-15
+    timeout-minutes: 240
+    env:
+      SEABYTE_MAC_ARCH: ${{ inputs.mac_arch || 'arm64' }}
+      SEABYTE_MAC_CODE_SIGN_IDENTITY: ${{ secrets.MACOS_CODE_SIGN_IDENTITY }}
+      SEABYTE_APPLE_ID: ${{ secrets.APPLE_ID }}
+      SEABYTE_APPLE_PASSWORD: ${{ secrets.APPLE_APP_PASSWORD }}
+      SEABYTE_APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Restore KDE Craft
+        uses: actions/cache@v4
+        with:
+          path: .build/macos
+          key: macos-${{ inputs.mac_arch || 'arm64' }}-seabyte-craft-${{ hashFiles('craftmaster.ini', 'branding/seabyte-branding.cmake') }}
+          restore-keys: macos-${{ inputs.mac_arch || 'arm64' }}-seabyte-craft-
+      - name: Install packaging prerequisites
+        run: brew install create-dmg inkscape
+      - name: Import Apple signing certificate
+        if: ${{ secrets.MACOS_CERTIFICATE_BASE64 != '' && secrets.MACOS_CERTIFICATE_PASSWORD != '' && secrets.MACOS_CODE_SIGN_IDENTITY != '' }}
+        env:
+          MACOS_CERTIFICATE_BASE64: ${{ secrets.MACOS_CERTIFICATE_BASE64 }}
+          MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+          KEYCHAIN_PASSWORD: ${{ github.run_id }}-${{ github.run_attempt }}
+        run: |
+          certificate_path="$RUNNER_TEMP/seabyte-signing.p12"
+          keychain_path="$RUNNER_TEMP/seabyte-signing.keychain-db"
+          printf '%s' "$MACOS_CERTIFICATE_BASE64" | base64 --decode > "$certificate_path"
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$keychain_path"
+          security set-keychain-settings -lut 21600 "$keychain_path"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$keychain_path"
+          security import "$certificate_path" -P "$MACOS_CERTIFICATE_PASSWORD" -A -t cert -f pkcs12 -k "$keychain_path"
+          security list-keychain -d user -s "$keychain_path" login.keychain-db
+          security set-key-partition-list -S apple-tool:,apple: -s -k "$KEYCHAIN_PASSWORD" "$keychain_path"
+          rm -f "$certificate_path"
+      - name: Build, test and package
+        run: ./scripts/build-macos.sh --arch "$SEABYTE_MAC_ARCH"
+      - name: Upload macOS artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: SeaByte-Cloud-macOS-${{ inputs.mac_arch || 'arm64' }}
+          path: dist/macos/**
+          if-no-files-found: error

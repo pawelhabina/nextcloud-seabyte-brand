@@ -1,0 +1,47 @@
+# SPDX-FileCopyrightText: 2026 SeaByte
+# SPDX-License-Identifier: GPL-2.0-or-later
+#
+# One regular expression per line. Expressions match
+# path:line-number:source-line. Entries are deliberately narrow and document
+# the upstream name that remains visible or technically necessary.
+
+# Required attribution in the SeaByte About dialog.
+^src/libsync/theme\.cpp:\d+:.*Based on Nextcloud Desktop
+
+# Unbranded-mode comparisons and migration constants; never rendered by the
+# branded client and retained for upstream compatibility.
+^src/libsync/theme\.cpp:\d+:.*QStringLiteral\("Nextcloud"
+^src/libsync/configfile\.cpp:\d+:.*QByteArrayLiteral\("Nextcloud"
+
+# Translator context only. The resulting action uses APPLICATION_NAME.
+^src/gui/systray\.cpp:\d+:.*Open Nextcloud main window
+^src/gui/cloudproviders/cloudproviderwrapper\.cpp:\d+:.*Open Nextcloud main window
+
+# Upstream support/legal attribution and upstream source link.
+^src/libsync/theme\.cpp:\d+:.*github\.com/nextcloud/desktop
+^src/gui/legalnotice\.cpp:\d+:
+
+# Product feature names and server protocol terms, not the desktop-client
+# brand: Nextcloud Assistant, server certificates and server capabilities.
+^src/libsync/ocsassistantconnector\.cpp:\d+:
+^src/libsync/clientsideencryption\.cpp:\d+:
+
+# WebDAV namespaces, server paths and local notification-test filenames are
+# wire/storage compatibility tokens, not user-facing desktop branding.
+^src/gui/editlocallyjob\.cpp:\d+:
+^src/gui/filetagmodel\.cpp:\d+:
+^src/gui/shellextensionsserver\.cpp:\d+:
+^src/libsync/propagateremotemkdir\.cpp:\d+:
+^src/libsync/networkjobs\.cpp:\d+:
+^src/gui/folder\.cpp:\d+:
+
+# Upstream feature documentation (notify_push), disabled branded onboarding
+# links and an inactive source comment.
+^src/gui/generalsettings\.ui:\d+:.*github\.com/nextcloud/notify_push
+^src/gui/wizard/welcomepage\.cpp:\d+:
+^src/libsync/nextcloudtheme\.cpp:\d+:
+^src/gui/socketapi/socketapi\.cpp:\d+:
+
+# Existing upstream logging categories keep their names; this filter enables
+# debug output for those categories and is not displayed as a product name.
+^src/libsync/logger\.cpp:\d+:.*nextcloud\.\*
