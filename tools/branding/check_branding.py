@@ -46,7 +46,9 @@ def cmake_default(text: str, key: str) -> str | None:
         rf"seabyte_cache_(?:string|bool)\(\s*{re.escape(key)}\s+(?:\"([^\"]*)\"|([^\s\)]+))",
         text,
     )
-    return (match.group(1) or match.group(2)) if match else None
+    if not match:
+        return None
+    return match.group(1) if match.group(1) is not None else match.group(2)
 
 
 def check_identity(checks: Checks) -> None:
@@ -69,6 +71,7 @@ def check_identity(checks: Checks) -> None:
         "MACOS_FINDER_EXTENSION_BUNDLE_ID": "pl.seabyte.cloud.findersync",
         "MACOS_APP_GROUP": "group.pl.seabyte.cloud",
         "ENABLE_CUSTOM_UPDATER": "OFF",
+        "CUSTOM_SPARKLE_PUBLIC_KEY": "",
         "ALLOW_CUSTOM_SERVER": "ON",
     }
     for key, value in expected.items():
@@ -81,6 +84,7 @@ def check_identity(checks: Checks) -> None:
         'set(APPLICATION_SERVER_URL "${DEFAULT_SERVER_URL}"',
         'set(APPLICATION_UPDATE_URL "${CUSTOM_UPDATE_URL}"',
         'set(BUILD_UPDATER "${ENABLE_CUSTOM_UPDATER}"',
+        'macOS custom updates require CUSTOM_SPARKLE_PUBLIC_KEY',
         "set(DISABLE_ACCOUNT_MIGRATION ON",
     )
     checks.contains(
@@ -343,6 +347,7 @@ def check_build_automation(checks: Checks) -> None:
         "--build-file-provider-module",
         "universal2",
         "SEABYTE_MAC_CODE_SIGN_IDENTITY",
+        "CUSTOM_SPARKLE_PUBLIC_KEY",
         "SHA256SUMS",
     )
     checks.contains(
@@ -355,6 +360,10 @@ def check_build_automation(checks: Checks) -> None:
     checks.contains(
         "branding/seabyte-branding.cmake",
         'set(BUILD_WIN_MSI ON CACHE BOOL "Build the SeaByte WiX MSI integration" FORCE)',
+    )
+    checks.contains(
+        "cmake/modules/MacOSXBundleInfo.plist.in",
+        "<string>@CUSTOM_SPARKLE_PUBLIC_KEY@</string>",
     )
 
 

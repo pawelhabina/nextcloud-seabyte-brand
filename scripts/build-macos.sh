@@ -62,6 +62,20 @@ revision="${SEABYTE_RELEASE_REVISION:-1}"
 version="33.0.7-seabyte.${revision}"
 signature_label="unsigned"
 code_sign_identity="${SEABYTE_MAC_CODE_SIGN_IDENTITY:-}"
+enable_custom_updater="${SEABYTE_ENABLE_CUSTOM_UPDATER:-0}"
+if [[ "$enable_custom_updater" == "1" || "$enable_custom_updater" == "ON" || "$enable_custom_updater" == "true" ]]; then
+    if [[ -z "${CUSTOM_UPDATE_URL:-}" ]]; then
+        echo "CUSTOM_UPDATE_URL is required when SEABYTE_ENABLE_CUSTOM_UPDATER is enabled." >&2
+        exit 2
+    fi
+    if [[ -z "${CUSTOM_SPARKLE_PUBLIC_KEY:-}" ]]; then
+        echo "CUSTOM_SPARKLE_PUBLIC_KEY is required when the macOS updater is enabled." >&2
+        exit 2
+    fi
+    export ENABLE_CUSTOM_UPDATER=ON
+else
+    export ENABLE_CUSTOM_UPDATER=OFF
+fi
 
 build_one_arch() {
     local arch="$1"
@@ -76,10 +90,12 @@ build_one_arch() {
         --app-name "SeaByte Cloud"
         --client-blueprints-git-ref stable-33.0
         --kde-blueprints-git-ref stable-33.0
-        --disable-auto-updater
         --build-file-provider-module
         --override-server-url "https://cloud.seabyte.pl"
     )
+    if [[ "$ENABLE_CUSTOM_UPDATER" == "OFF" ]]; then
+        args+=(--disable-auto-updater)
+    fi
     if ((skip_tests == 0)); then
         args+=(--build-tests)
     fi

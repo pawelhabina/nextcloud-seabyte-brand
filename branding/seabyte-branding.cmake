@@ -56,6 +56,7 @@ seabyte_cache_string(MACOS_APP_GROUP "group.pl.seabyte.cloud" "macOS application
 seabyte_cache_string(MACOS_TEAM_ID "" "Apple Developer Team ID; intentionally empty for unsigned builds")
 
 seabyte_cache_string(CUSTOM_UPDATE_URL "" "SeaByte updater feed URL")
+seabyte_cache_string(CUSTOM_SPARKLE_PUBLIC_KEY "" "SeaByte Sparkle 2 EdDSA public key")
 seabyte_cache_bool(ENABLE_CUSTOM_UPDATER OFF "Build the updater against CUSTOM_UPDATE_URL")
 seabyte_cache_bool(ALLOW_CUSTOM_SERVER ON "Allow users to edit the pre-filled server URL")
 
@@ -89,6 +90,9 @@ set(APPLICATION_UPDATE_URL "${CUSTOM_UPDATE_URL}" CACHE STRING "SeaByte updater 
 set(BUILD_UPDATER "${ENABLE_CUSTOM_UPDATER}" CACHE BOOL "Build SeaByte updater" FORCE)
 if(ENABLE_CUSTOM_UPDATER AND CUSTOM_UPDATE_URL STREQUAL "")
     message(FATAL_ERROR "ENABLE_CUSTOM_UPDATER requires a non-empty CUSTOM_UPDATE_URL")
+endif()
+if(ENABLE_CUSTOM_UPDATER AND APPLE AND CUSTOM_SPARKLE_PUBLIC_KEY STREQUAL "")
+    message(FATAL_ERROR "macOS custom updates require CUSTOM_SPARKLE_PUBLIC_KEY")
 endif()
 
 # Avoid importing or migrating settings belonging to Nextcloud Desktop.

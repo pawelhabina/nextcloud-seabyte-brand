@@ -42,10 +42,8 @@
     <false/>
     <key>SUShowReleaseNotes</key>
     <false/>
-    <key>SUPublicDSAKeyFile</key>
-    <string>dsa_pub.pem</string>
     <key>SUPublicEDKey</key>
-    <string>c3RcfDWDayvsYSZW8FhZN1UOJhvPVN30zleb4zOqbtU=</string>
+    <string>@CUSTOM_SPARKLE_PUBLIC_KEY@</string>
     <key>SUEnableInstallerLauncherService</key>
     <true/>
     <key>UTExportedTypeDeclarations</key>
