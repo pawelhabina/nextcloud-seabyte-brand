@@ -152,7 +152,7 @@
         <Directory Id="ProgramMenuFolder" Name="Programs">
             <!-- Start Menu Shortcut -->
             <Component Id="StartMenuIcon" Guid="*" Win64="$(var.PlatformWin64)">
-                <Shortcut Id="StartMenu" Name="$(var.AppName)" Target="[INSTALLDIR]$(var.AppExe)" WorkingDirectory="INSTALLDIR" Icon="$(var.AppIcon)" IconIndex="0" Advertise="no">
+                <Shortcut Id="StartMenu" Name="$(var.AppName)" Target="[INSTALLDIR]bin\$(var.AppExe)" WorkingDirectory="INSTALLDIR" Icon="$(var.AppIcon)" IconIndex="0" Advertise="no">
                     <ShortcutProperty Key="System.AppUserModel.ID" Value="$(var.AppUserModelId)" />
                 </Shortcut>
                 <RegistryValue Root="HKCU" Key="Software\$(var.AppVendor)\$(var.AppName)" Name="installedStartMenuShortcut" Type="integer" Value="1" KeyPath="yes"/>
@@ -162,7 +162,7 @@
         <Directory Id="DesktopFolder" Name="Desktop">
             <!-- Desktop Shortcut -->
             <Component Id="DesktopIcon" Guid="*" Win64="$(var.PlatformWin64)">
-                <Shortcut Id="Desktop" Name="$(var.AppName)" Target="[INSTALLDIR]$(var.AppExe)" WorkingDirectory="INSTALLDIR" Icon="$(var.AppIcon)" IconIndex="0" Advertise="no">
+                <Shortcut Id="Desktop" Name="$(var.AppName)" Target="[INSTALLDIR]bin\$(var.AppExe)" WorkingDirectory="INSTALLDIR" Icon="$(var.AppIcon)" IconIndex="0" Advertise="no">
                     <ShortcutProperty Key="System.AppUserModel.ID" Value="$(var.AppUserModelId)" />
                 </Shortcut>
                 <RegistryValue Root="HKCU" Key="Software\$(var.AppVendor)\$(var.AppName)" Name="installedDesktopShortcut" Type="integer" Value="1" KeyPath="yes"/>
@@ -199,10 +199,10 @@
                 <RegistryValue Type="string" Name="URL Protocol" Value="" />
             </RegistryKey>
             <RegistryKey Root="HKLM" Key="Software\Classes\$(var.AppCommandOpenUrlScheme)\DefaultIcon" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
-                <RegistryValue Type="string" Value="[INSTALLDIR]$(var.AppExe)" />
+                <RegistryValue Type="string" Value="[INSTALLDIR]bin\$(var.AppExe)" />
             </RegistryKey>
             <RegistryKey Root="HKLM" Key="Software\Classes\$(var.AppCommandOpenUrlScheme)\shell\open\command" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
-                <RegistryValue Type="string" Value="&quot;[INSTALLDIR]$(var.AppExe)&quot; &quot;%1&quot;" />
+                <RegistryValue Type="string" Value="&quot;[INSTALLDIR]bin\$(var.AppExe)&quot; &quot;%1&quot;" />
             </RegistryKey>
         </Component>
         <!-- SeaByte-specific alias. The server-compatible nc:// handler is
@@ -213,10 +213,10 @@
                 <RegistryValue Type="string" Name="URL Protocol" Value="" />
             </RegistryKey>
             <RegistryKey Root="HKLM" Key="Software\Classes\$(var.AppCommandOpenUrlAlias)\DefaultIcon" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
-                <RegistryValue Type="string" Value="[INSTALLDIR]$(var.AppExe)" />
+                <RegistryValue Type="string" Value="[INSTALLDIR]bin\$(var.AppExe)" />
             </RegistryKey>
             <RegistryKey Root="HKLM" Key="Software\Classes\$(var.AppCommandOpenUrlAlias)\shell\open\command" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
-                <RegistryValue Type="string" Value="&quot;[INSTALLDIR]$(var.AppExe)&quot; &quot;%1&quot;" />
+                <RegistryValue Type="string" Value="&quot;[INSTALLDIR]bin\$(var.AppExe)&quot; &quot;%1&quot;" />
             </RegistryKey>
         </Component>
     </DirectoryRef>

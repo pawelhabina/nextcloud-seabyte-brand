@@ -346,6 +346,8 @@ def check_build_automation(checks: Checks) -> None:
         "stable-33.0",
         "SeaByte-Cloud-Setup-x64-",
         '$env:Path = "$CraftBin;$env:Path"',
+        '$InstallerIcon = Get-ChildItem $ClientBuild',
+        'Copy-Item $InstallerIcon.FullName (Join-Path $Image.FullName "SeaByte.ico")',
         "$env:PRODUCTCODE",
         "[guid]::NewGuid()",
         "SEABYTE_WINDOWS_CERT_SHA1",
@@ -363,12 +365,24 @@ def check_build_automation(checks: Checks) -> None:
     checks.contains(
         "admin/osx/mac-crafter/Sources/Utils/Packaging.swift",
         'create-dmg --volname \\"\\(appName)\\"',
+        'tar cf \\"\\(sparkleTbzPath)\\" \\"\\(packagePath)\\"',
+        '\\"\\(sparkleTbzPath)\\"',
     )
     checks.contains(
         "admin/win/msi/make-msi.bat.in",
         "where uuidgen",
         "[guid]::NewGuid().ToString('B').ToUpperInvariant()",
         'if "!PRODUCTCODE!" == ""',
+        "if errorlevel 1 exit /b !ERRORLEVEL!",
+    )
+    checks.contains(
+        "shell_integration/windows/WinShellExt.wxs.in",
+        r"$(var.HarvestAppDir)\bin\NCContextMenu.dll",
+        r"$(var.HarvestAppDir)\bin\NCOverlays.dll",
+    )
+    checks.contains(
+        "admin/win/msi/Nextcloud.wxs",
+        r"[INSTALLDIR]bin\$(var.AppExe)",
     )
     checks.contains(
         ".github/workflows/build-seabyte.yml",

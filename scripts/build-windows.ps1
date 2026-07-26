@@ -122,6 +122,13 @@ if (-not $Image) {
     throw "KDE Craft image containing bin\SeaByteCloud.exe was not found."
 }
 
+$InstallerIcon = Get-ChildItem $ClientBuild -Recurse -File -Filter "SeaByte.ico" |
+    Select-Object -First 1
+if (-not $InstallerIcon) {
+    throw "Generated SeaByte.ico was not found in the client build."
+}
+Copy-Item $InstallerIcon.FullName (Join-Path $Image.FullName "SeaByte.ico") -Force
+
 $SignatureLabel = "unsigned"
 $CertificateSha1 = $env:SEABYTE_WINDOWS_CERT_SHA1
 if (-not [string]::IsNullOrWhiteSpace($CertificateSha1)) {
