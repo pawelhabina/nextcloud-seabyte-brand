@@ -18,6 +18,8 @@ endif()
 set(STATE_SUBDIR "")
 if(APPLICATION_NAME STREQUAL "Nextcloud")
     set(STATE_SUBDIR "nextcloud/")
+elseif(APPLICATION_ICON_NAME STREQUAL "SeaByte")
+    set(STATE_SUBDIR "seabyte/")
 endif()
 
 configure_file(${CMAKE_SOURCE_DIR}/theme.qrc.in ${CMAKE_SOURCE_DIR}/theme.qrc)
@@ -638,6 +640,9 @@ set_target_properties(nextcloud PROPERTIES
 )
 
 target_link_libraries(nextcloud PRIVATE nextcloudCore)
+if(WIN32)
+    target_link_libraries(nextcloud PRIVATE shell32)
+endif()
 
 if(TARGET PkgConfig::CLOUDPROVIDERS)
     message("Building with libcloudproviderssupport")

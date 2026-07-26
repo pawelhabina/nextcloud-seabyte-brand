@@ -352,8 +352,9 @@ if (APPLE)
 endif()
 
 # Handle Translations, pick all client_* files from trans directory.
-file( GLOB TRANS_FILES ${CMAKE_SOURCE_DIR}/translations/client_*.ts)
-set(TRANSLATIONS ${TRANS_FILES})
+file(GLOB TRANS_FILES ${CMAKE_SOURCE_DIR}/translations/client_*.ts)
+file(GLOB SEABYTE_TRANS_FILES ${CMAKE_SOURCE_DIR}/branding/translations/seabyte_*.ts)
+set(TRANSLATIONS ${TRANS_FILES} ${SEABYTE_TRANS_FILES})
 
 if(BUILD_CLIENT)
     add_subdirectory(src)

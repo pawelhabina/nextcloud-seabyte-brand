@@ -42,9 +42,11 @@ seabyte_cache_string(BRAND_WEBSITE "https://seabyte.pl" "Brand website")
 seabyte_cache_string(DEFAULT_SERVER_URL "https://cloud.seabyte.pl" "Pre-filled server URL")
 seabyte_cache_string(BRAND_CONFIG_NAME "seabytecloud" "Private settings and data namespace")
 seabyte_cache_string(BRAND_LOCAL_EDIT_URI_SCHEME "nc" "Server-compatible local-edit URI scheme")
+seabyte_cache_string(BRAND_URI_HANDLER_ALIAS "seabytecloud" "SeaByte-specific URL handler alias")
 
 seabyte_cache_string(WINDOWS_EXECUTABLE_NAME "SeaByteCloud" "Windows executable base name")
 seabyte_cache_string(WINDOWS_APP_ID "pl.seabyte.cloud" "Windows AppUserModelID")
+seabyte_cache_string(WINDOWS_INSTALLER_BASENAME "SeaByte-Cloud-Setup" "Windows installer file base name")
 
 seabyte_cache_string(MACOS_BUNDLE_ID "pl.seabyte.cloud" "macOS main application bundle identifier")
 seabyte_cache_string(MACOS_FILE_PROVIDER_BUNDLE_ID "pl.seabyte.cloud.fileprovider" "macOS File Provider bundle identifier")
@@ -116,4 +118,3 @@ set(CFAPI_SHELLEXT_CUSTOM_STATE_HANDLER_CLASS_ID "5933A4BC-3E47-4489-A863-14EF63
 set(CFAPI_SHELLEXT_CUSTOM_STATE_HANDLER_CLASS_ID_REG "{${CFAPI_SHELLEXT_CUSTOM_STATE_HANDLER_CLASS_ID}}")
 set(CFAPI_SHELLEXT_THUMBNAIL_HANDLER_CLASS_ID "E1FDB344-BA3C-4C36-91D7-2316C5121546")
 set(CFAPI_SHELLEXT_THUMBNAIL_HANDLER_CLASS_ID_REG "{${CFAPI_SHELLEXT_THUMBNAIL_HANDLER_CLASS_ID}}")
-

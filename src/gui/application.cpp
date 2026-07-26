@@ -36,6 +36,7 @@
 
 #if defined(Q_OS_WIN)
 #include <windows.h>
+#include <shobjidl.h>
 #include "shellextensionsserver.h"
 #elif defined(Q_OS_MACOS)
 #include "macOS/fileprovider.h"
@@ -253,6 +254,16 @@ Application::Application(int &argc, char **argv)
 
     setApplicationName(_theme->appName());
     setWindowIcon(_theme->applicationIcon());
+
+#if defined(Q_OS_WIN)
+    const auto appUserModelId = QStringLiteral(WINDOWS_APP_ID);
+    const auto appUserModelResult = SetCurrentProcessExplicitAppUserModelID(
+        reinterpret_cast<PCWSTR>(appUserModelId.utf16()));
+    if (FAILED(appUserModelResult)) {
+        qCWarning(lcApplication) << "Could not set Windows AppUserModelID" << appUserModelId
+                                 << "HRESULT" << appUserModelResult;
+    }
+#endif
 
     parseOptions(arguments());
     //no need to waste time;
@@ -875,7 +886,8 @@ void Application::parseOptions(const QStringList &options)
         } else if (option.endsWith(QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX))) {
             // virtual file, open it after the Folder were created (if the app is not terminated)
             QTimer::singleShot(0, this, [this, option] { openVirtualFile(option); });
-        } else if (option.startsWith(QStringLiteral(APPLICATION_URI_HANDLER_SCHEME "://open"))) {
+        } else if (option.startsWith(QStringLiteral(APPLICATION_URI_HANDLER_SCHEME "://open"))
+            || option.startsWith(QStringLiteral(BRAND_URI_HANDLER_ALIAS "://open"))) {
             // see the section Local file editing of the Architecture page of the user documentation
             _editFileLocallyUrl = QUrl::fromUserInput(option);
             if (!_editFileLocallyUrl.isValid()) {
@@ -1040,6 +1052,7 @@ QString enforcedLanguage()
 void Application::setupTranslations()
 {
     auto translator = std::make_unique<QTranslator>();
+    auto brandTranslator = std::make_unique<QTranslator>();
     auto qtTranslator = std::make_unique<QTranslator>();
     auto qtkeychainTranslator = std::make_unique<QTranslator>();
 
@@ -1094,6 +1107,12 @@ void Application::setupTranslations()
                 qCDebug(lcApplication()) << "impossible to load QtKeychain translation catalog" << qtkeychainTrFile;
             }
         }
+
+        const QString brandTrFile = QLatin1String("seabyte_") + choosenLanguage;
+        if (!brandTranslator->load(brandTrFile, trPath)) {
+            qCDebug(lcApplication()) << "SeaByte translation catalog not found for" << choosenLanguage;
+        }
+
         if (!translator->isEmpty()) {
             translator->setParent(this);
             installTranslator(translator.release());
@@ -1107,6 +1126,11 @@ void Application::setupTranslations()
         if (!qtkeychainTranslator->isEmpty()) {
             qtkeychainTranslator->setParent(this);
             installTranslator(qtkeychainTranslator.release());
+        }
+
+        if (!brandTranslator->isEmpty()) {
+            brandTranslator->setParent(this);
+            installTranslator(brandTranslator.release());
         }
     } else {
         qCWarning(lcApplication()) << "translation catalog failed to load";

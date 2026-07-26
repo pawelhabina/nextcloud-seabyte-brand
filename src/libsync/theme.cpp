@@ -553,7 +553,7 @@ QString Theme::forceConfigAuthType() const
 
 QString Theme::defaultClientFolder() const
 {
-    return appName();
+    return QString::fromUtf8(BRAND_FOLDER_NAME);
 }
 
 QString Theme::systrayIconFlavor(bool mono) const
@@ -639,9 +639,24 @@ QString Theme::aboutInfo() const
 
 QString Theme::about() const
 {
-    const auto devString = developerStringInfo();
+    auto brandedAbout = QStringLiteral(
+        "<p><b>%1</b><br>"
+        "<a href=\"%2\">%2</a><br>"
+        "%3<br>"
+        "%4<br>"
+        "%5</p>")
+                            .arg(
+                                QStringLiteral(APPLICATION_NAME),
+                                QStringLiteral(BRAND_WEBSITE),
+                                tr("Based on Nextcloud Desktop"),
+                                tr("Version %1").arg(QString::fromLatin1(MIRALL_HUMAN_VERSION_STRING)),
+                                tr("Upstream version %1").arg(QStringLiteral(SEABYTE_UPSTREAM_VERSION)));
 
-    return devString;
+#if !defined(BUILD_UPDATER)
+    brandedAbout += tr("<p>Application updates are provided by SeaByte.</p>");
+#endif
+
+    return brandedAbout;
 }
 
 QString Theme::aboutDetails() const
