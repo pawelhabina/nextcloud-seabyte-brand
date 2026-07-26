@@ -24,5 +24,18 @@
         <translation>&lt;p&gt;Aktualizacje aplikacji dostarcza SeaByte.&lt;/p&gt;</translation>
     </message>
 </context>
+<context>
+    <name>OCC::OwncloudSetupWizard</name>
+    <message>
+        <source>Creating folder on %1: %2</source>
+        <translation>Tworzenie katalogu na %1: %2</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Send a Talk reply</source>
+        <translation>Wyślij odpowiedź w Talk</translation>
+    </message>
+</context>
 </TS>
-

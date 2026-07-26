@@ -63,7 +63,7 @@ static bool compressLog(const QString &originalName, const QString &targetName)
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcPermanentLog, "nextcloud.log.permanent")
+Q_LOGGING_CATEGORY(lcPermanentLog, APPLICATION_CONFIG_NAME ".log.permanent")
 
 Logger *Logger::instance()
 {
@@ -136,7 +136,7 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
                 _logstream->flush();
             }
             closeNoLock();
-            enterNextLogFileNoLock(QStringLiteral("nextcloud.log"), LogType::Log);
+            enterNextLogFileNoLock(QStringLiteral(APPLICATION_CONFIG_NAME ".log"), LogType::Log);
         }
         ++linesCounter;
 
@@ -256,7 +256,7 @@ void Logger::disableTemporaryFolderLogDir()
     if (!_temporaryFolderLogDir)
         return;
 
-    enterNextLogFile("nextcloud.log", LogType::Log);
+    enterNextLogFile(QStringLiteral(APPLICATION_CONFIG_NAME ".log"), LogType::Log);
     setLogDir(QString());
     _temporaryFolderLogDir = false;
 }

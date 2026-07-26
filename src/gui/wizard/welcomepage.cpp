@@ -27,8 +27,13 @@ void WelcomePage::setupUi()
     _ui->setupUi(this);
     setupSlideShow();
     setupLoginButton();
-    setupCreateAccountButton();
-    setupHostYourOwnServerLabel();
+    if (Theme::instance()->isBranded()) {
+        _ui->createAccountButton->hide();
+        _ui->hostYourOwnServerLabel->hide();
+    } else {
+        setupCreateAccountButton();
+        setupHostYourOwnServerLabel();
+    }
 }
 
 void WelcomePage::initializePage()
@@ -47,7 +52,7 @@ void WelcomePage::styleSlideShow()
     const auto theme = Theme::instance();
     const auto backgroundColor = palette().window().color();
 
-    const auto wizardNextcloudIconFileName = theme->isBranded() ? Theme::hidpiFileName("wizard-nextcloud.png", backgroundColor)
+    const auto wizardNextcloudIconFileName = theme->isBranded() ? QStringLiteral(":/client/theme/colored/" APPLICATION_ICON_NAME "-icon.svg")
                                                                 : Theme::hidpiFileName(":/client/theme/colored/wizard-nextcloud.png");
     const auto wizardFilesIconFileName = theme->isBranded() ? Theme::hidpiFileName("wizard-files.png", backgroundColor)
                                                             : Theme::hidpiFileName(":/client/theme/colored/wizard-files.png");

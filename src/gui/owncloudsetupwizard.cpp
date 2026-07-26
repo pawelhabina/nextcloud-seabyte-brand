@@ -621,7 +621,8 @@ void OwncloudSetupWizard::slotRemoteFolderExists(QNetworkReply *reply)
 
 void OwncloudSetupWizard::createRemoteFolder()
 {
-    _ocWizard->appendToConfigurationLog(tr("creating folder on Nextcloud: %1").arg(_remoteFolder));
+    _ocWizard->appendToConfigurationLog(
+        tr("Creating folder on %1: %2").arg(QStringLiteral(APPLICATION_NAME), _remoteFolder));
 
     auto *job = new MkColJob(_ocWizard->account(), _remoteFolder, this);
     connect(job, &MkColJob::finishedWithError, this, &OwncloudSetupWizard::slotCreateRemoteFolderFinished);
