@@ -84,6 +84,7 @@ jobs:
             C:\Craft\SeaByte
           key: windows-seabyte-craft-${{ hashFiles('craftmaster.ini', 'branding/seabyte-branding.cmake', 'scripts/build-windows.ps1') }}
           restore-keys: windows-seabyte-craft-
+          save-always: true
       - name: Import Authenticode certificate
         if: ${{ env.WINDOWS_PFX_BASE64 != '' && env.WINDOWS_PFX_PASSWORD != '' }}
         shell: pwsh

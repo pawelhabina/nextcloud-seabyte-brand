@@ -45,6 +45,16 @@ if ($LASTEXITCODE -ne 0) {
 
 New-Item -ItemType Directory -Force -Path $BuildRoot, $DistDir | Out-Null
 
+if (-not (Get-Command inkscape.exe -ErrorAction SilentlyContinue)) {
+    if ($SkipDependencyInstall -or -not (Get-Command choco.exe -ErrorAction SilentlyContinue)) {
+        throw "Inkscape is required to generate Windows shell-extension icons."
+    }
+    & choco.exe install inkscape --yes --no-progress
+    if ($LASTEXITCODE -ne 0) {
+        throw "Could not install Inkscape."
+    }
+}
+
 if (-not (Test-Path (Join-Path $CraftMaster "CraftMaster.py"))) {
     git clone --depth=1 https://invent.kde.org/packaging/craftmaster.git $CraftMaster
     if ($LASTEXITCODE -ne 0) {
