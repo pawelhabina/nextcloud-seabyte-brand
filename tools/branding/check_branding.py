@@ -346,6 +346,8 @@ def check_build_automation(checks: Checks) -> None:
         "stable-33.0",
         "SeaByte-Cloud-Setup-x64-",
         '$env:Path = "$CraftBin;$env:Path"',
+        "$env:PRODUCTCODE",
+        "[guid]::NewGuid()",
         "SEABYTE_WINDOWS_CERT_SHA1",
         "SHA256SUMS",
     )
@@ -357,6 +359,16 @@ def check_build_automation(checks: Checks) -> None:
         "SEABYTE_MAC_CODE_SIGN_IDENTITY",
         "CUSTOM_SPARKLE_PUBLIC_KEY",
         "SHA256SUMS",
+    )
+    checks.contains(
+        "admin/osx/mac-crafter/Sources/Utils/Packaging.swift",
+        'create-dmg --volname \\"\\(appName)\\"',
+    )
+    checks.contains(
+        "admin/win/msi/make-msi.bat.in",
+        "where uuidgen",
+        "[guid]::NewGuid().ToString('B').ToUpperInvariant()",
+        'if "!PRODUCTCODE!" == ""',
     )
     checks.contains(
         ".github/workflows/build-seabyte.yml",

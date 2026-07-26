@@ -155,6 +155,7 @@ if (-not (Test-Path $MakeMsi)) {
 
 Push-Location $MsiBuildDir
 try {
+    $env:PRODUCTCODE = "{$([guid]::NewGuid().ToString().ToUpperInvariant())}"
     & cmd.exe /D /C "`"$MakeMsi`" `"$($Image.FullName)`""
     if ($LASTEXITCODE -ne 0) {
         throw "WiX MSI creation failed."

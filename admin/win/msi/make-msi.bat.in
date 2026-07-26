@@ -55,10 +55,23 @@ if "%WISUBSTG%" == "" (
 
 REM generate a ProductCode to use in the resulting MSI to ensure that the embedded
 REM transforms don't break managed deployments (see #8610)
-REM the uuidgen tool is provided by the Visual Studio CLI tools
-for /f %%i in ('uuidgen -c') do set PRODUCTCODE=%%i
+REM Prefer uuidgen from the Visual Studio CLI tools, but GitHub-hosted runners do
+REM not always expose it on PATH. PowerShell is available on all supported Windows
+REM build hosts and provides an equivalent GUID generator.
+if "%PRODUCTCODE%" == "" (
+  where uuidgen >nul 2>&1
+  if !ERRORLEVEL! equ 0 (
+    for /f %%i in ('uuidgen -c') do set PRODUCTCODE=%%i
+  ) else (
+    for /f %%i in ('powershell.exe -NoProfile -NonInteractive -Command "[guid]::NewGuid().ToString('B').ToUpperInvariant()"') do set PRODUCTCODE=%%i
+  )
+)
+if "!PRODUCTCODE!" == "" (
+  echo "Could not generate an MSI ProductCode."
+  exit 1
+)
 echo/
-echo :: Using ProductCode=%PRODUCTCODE%
+echo :: Using ProductCode=!PRODUCTCODE!
 
 echo/
 echo :: Harvesting files for MSI
