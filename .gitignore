@@ -18,6 +18,7 @@ build*
 !scripts/build-macos.sh
 !scripts/build-windows.ps1
 !.github/workflows/build-seabyte.yml
+!docs/BUILD_*.md
 cscope.*
 tags
 t1.cfg
