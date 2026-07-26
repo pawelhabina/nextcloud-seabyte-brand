@@ -6,6 +6,8 @@
 
 #include "logbrowser.h"
 
+#include "config.h"
+
 #include <cstdio>
 #include <iostream>
 
