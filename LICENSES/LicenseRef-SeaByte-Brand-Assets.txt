@@ -1,0 +1,9 @@
+SeaByte Brand Assets License
+
+Copyright (c) 2026 SeaByte. All rights reserved.
+
+The SeaByte names, logos, and visual identity assets may be used only to build,
+test, and distribute authorized SeaByte Cloud products. This permission does
+not grant trademark rights or permission to represent an unaffiliated product
+as an official SeaByte product.
+
