@@ -18,7 +18,13 @@ if ($env:OS -ne "Windows_NT") {
 
 $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 if ([string]::IsNullOrWhiteSpace($BuildRoot)) {
-    $BuildRoot = Join-Path $RepoRoot ".build\windows"
+    if ($env:GITHUB_ACTIONS -eq "true") {
+        # KDE Craft creates deeply nested paths. Keep the CI root short enough
+        # for tools which still use the legacy Windows MAX_PATH limit.
+        $BuildRoot = "C:\Craft\SeaByte"
+    } else {
+        $BuildRoot = Join-Path $RepoRoot ".build\windows"
+    }
 }
 $BuildRoot = [System.IO.Path]::GetFullPath($BuildRoot)
 $CraftMaster = Join-Path $BuildRoot "CraftMaster"
@@ -82,7 +88,7 @@ $env:WIX = Split-Path (Split-Path $CandlePath -Parent) -Parent
 
 Invoke-Craft --buildtype Release --src-dir $RepoRoot --options "nextcloud-client.buildTests=True" nextcloud-client
 
-$ClientBuild = Join-Path $RepoRoot "$CraftTarget\build\nextcloud-client\work\build"
+$ClientBuild = Join-Path $BuildRoot "$CraftTarget\build\nextcloud-client\work\build"
 if (-not (Test-Path $ClientBuild)) {
     throw "Expected client build directory not found: $ClientBuild"
 }
@@ -94,7 +100,7 @@ if (-not $SkipTests) {
     }
 }
 
-$Image = Get-ChildItem (Join-Path $RepoRoot "$CraftTarget\build\nextcloud-client") -Directory -Filter "image-Release-*" |
+$Image = Get-ChildItem (Join-Path $BuildRoot "$CraftTarget\build\nextcloud-client") -Directory -Filter "image-Release-*" |
     Where-Object { Test-Path (Join-Path $_.FullName "bin\SeaByteCloud.exe") } |
     Select-Object -First 1
 if (-not $Image) {

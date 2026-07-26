@@ -80,9 +80,8 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            .build/windows
-            windows-msvc2022_64-cl
-          key: windows-seabyte-craft-${{ hashFiles('craftmaster.ini', 'branding/seabyte-branding.cmake') }}
+            C:\Craft\SeaByte
+          key: windows-seabyte-craft-${{ hashFiles('craftmaster.ini', 'branding/seabyte-branding.cmake', 'scripts/build-windows.ps1') }}
           restore-keys: windows-seabyte-craft-
       - name: Import Authenticode certificate
         if: ${{ env.WINDOWS_PFX_BASE64 != '' && env.WINDOWS_PFX_PASSWORD != '' }}
