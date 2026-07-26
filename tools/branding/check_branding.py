@@ -97,6 +97,7 @@ def check_identity(checks: Checks) -> None:
         'tr("Based on Nextcloud Desktop")',
         'tr("Upstream version %1")',
         'tr("<p>Application updates are provided by SeaByte.</p>")',
+        "#ifdef APPLICATION_UPDATE_URL",
     )
     checks.contains(
         "src/gui/wizard/owncloudsetuppage.cpp",

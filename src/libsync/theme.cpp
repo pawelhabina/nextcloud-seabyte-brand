@@ -586,7 +586,11 @@ bool Theme::monoIconsAvailable() const
 
 QString Theme::updateCheckUrl() const
 {
+#ifdef APPLICATION_UPDATE_URL
     return APPLICATION_UPDATE_URL;
+#else
+    return QString();
+#endif
 }
 
 qint64 Theme::newBigFolderSizeLimit() const
