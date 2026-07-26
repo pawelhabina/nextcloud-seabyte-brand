@@ -20,9 +20,6 @@
 // The goal of this test is to check whether the correct update channel is used when
 // multiple accounts are set up.
 //
-// Note: The behaviour for a branded client isn't tested, because there is no
-//       sane way, to have that reported (yet).
-//
 class TestUpdateChannel : public QObject
 {
     Q_OBJECT
@@ -58,6 +55,12 @@ private slots:
         {
             auto config = OCC::ConfigFile();
             config.setUpdateChannel(UpdateChannel::Beta.toString());
+        }
+
+        if (OCC::Theme::instance()->isBranded()) {
+            // OEM clients do not consume the upstream update channels.
+            QCOMPARE(OCC::ConfigFile().currentUpdateChannel(), UpdateChannel::Stable.toString());
+            return;
         }
 
         {

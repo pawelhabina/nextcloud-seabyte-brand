@@ -103,6 +103,11 @@ def check_identity(checks: Checks) -> None:
         "src/gui/wizard/owncloudsetuppage.cpp",
         "_ui.leUrl->setPlaceholderText(theme->overrideServerUrl())",
     )
+    checks.contains(
+        "test/testupdatechannel.cpp",
+        "if (OCC::Theme::instance()->isBranded())",
+        "OEM clients do not consume the upstream update channels.",
+    )
 
 
 def check_version(checks: Checks) -> None:
