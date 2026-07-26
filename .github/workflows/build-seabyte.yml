@@ -106,7 +106,7 @@ jobs:
             C:\Craft\SeaByte
           key: windows-seabyte-craft-${{ hashFiles('craftmaster.ini', 'branding/seabyte-branding.cmake', 'scripts/build-windows.ps1') }}
       - name: Upload Windows artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: SeaByte-Cloud-Windows-x64
           path: dist/windows/**
@@ -166,7 +166,7 @@ jobs:
           path: .build/macos
           key: macos-${{ inputs.mac_arch || 'arm64' }}-seabyte-craft-${{ hashFiles('craftmaster.ini', 'branding/seabyte-branding.cmake') }}
       - name: Upload macOS artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: SeaByte-Cloud-macOS-${{ inputs.mac_arch || 'arm64' }}
           path: dist/macos/**
