@@ -91,6 +91,7 @@ requirements and troubleshooting are in
 - Private updater protocol: [docs/UPDATES.md](docs/UPDATES.md)
 - Release checklist: [docs/RELEASING.md](docs/RELEASING.md)
 - Known platform limits: [docs/KNOWN_LIMITATIONS.md](docs/KNOWN_LIMITATIONS.md)
+- Latest local verification: [docs/VERIFICATION_REPORT.md](docs/VERIFICATION_REPORT.md)
 - SeaByte changes: [CHANGELOG_SEABYTE.md](CHANGELOG_SEABYTE.md)
 
 To update the fork, fetch a new stable tag from the `upstream` remote, create
