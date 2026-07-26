@@ -198,6 +198,11 @@ convert.exe
 *-sidebar.png
 *-w10startmenu.png
 *state-*.png
+!theme/colored/*-SeaByte-icon.png
+!theme/colored/*-SeaByte-w10startmenu.png
+!theme/colored/seabyte/state-*.png
+!theme/black/seabyte/state-*.png
+!theme/white/seabyte/state-*.png
 theme.qrc
 *.AppImage
 
