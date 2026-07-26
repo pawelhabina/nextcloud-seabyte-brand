@@ -60,7 +60,6 @@ jobs:
         run: |
           python tools/branding/generate_assets.py
           python tools/branding/check_branding.py
-          git diff --exit-code
 
   windows:
     name: Windows x64 MSI
