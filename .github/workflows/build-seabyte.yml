@@ -79,7 +79,7 @@ jobs:
           python-version: "3.12"
       - name: Restore KDE Craft
         id: windows-craft-cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v6
         with:
           path: |
             C:\Craft\SeaByte
@@ -100,7 +100,7 @@ jobs:
         run: ./scripts/build-windows.ps1
       - name: Save KDE Craft
         if: ${{ always() && steps.windows-craft-cache.outputs.cache-hit != 'true' }}
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v6
         with:
           path: |
             C:\Craft\SeaByte
@@ -135,7 +135,7 @@ jobs:
           python-version: "3.12"
       - name: Restore KDE Craft
         id: macos-craft-cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v6
         with:
           path: .build/macos
           key: macos-${{ inputs.mac_arch || 'arm64' }}-seabyte-craft-${{ hashFiles('craftmaster.ini', 'branding/seabyte-branding.cmake') }}
@@ -161,7 +161,7 @@ jobs:
         run: ./scripts/build-macos.sh --arch "$SEABYTE_MAC_ARCH"
       - name: Save KDE Craft
         if: ${{ always() && steps.macos-craft-cache.outputs.cache-hit != 'true' }}
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v6
         with:
           path: .build/macos
           key: macos-${{ inputs.mac_arch || 'arm64' }}-seabyte-craft-${{ hashFiles('craftmaster.ini', 'branding/seabyte-branding.cmake') }}
