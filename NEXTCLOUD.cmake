@@ -92,3 +92,7 @@ endif()
 if (APPLE AND CMAKE_OSX_DEPLOYMENT_TARGET VERSION_GREATER_EQUAL 11.0)
     option( BUILD_FILE_PROVIDER_MODULE "Build the macOS virtual files File Provider module" OFF )
 endif()
+
+# Keep vendor-specific values in one module. The upstream defaults above remain
+# useful documentation and make rebases easier to review.
+include("${CMAKE_CURRENT_LIST_DIR}/branding/seabyte-branding.cmake")
