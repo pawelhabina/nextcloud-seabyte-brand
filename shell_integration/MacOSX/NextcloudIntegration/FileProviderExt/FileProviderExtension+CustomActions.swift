@@ -12,7 +12,7 @@ extension FileProviderExtension: NSFileProviderCustomAction {
         completionHandler: @escaping ((any Error)?) -> Void
     ) -> Progress {
         switch actionIdentifier.rawValue {
-        case "com.nextcloud.desktopclient.FileProviderExt.FileActionsAction":
+        case let identifier where identifier.hasSuffix(".FileActionsAction"):
             guard let itemIdentifier = itemIdentifiers.first else {
                 logger.error("Failed to get first item identifier for file actions action.")
                 completionHandler(NSFileProviderError(.noSuchItem))
@@ -46,19 +46,19 @@ extension FileProviderExtension: NSFileProviderCustomAction {
             }
 
             return Progress()
-        case "com.nextcloud.desktopclient.FileProviderExt.KeepDownloadedAction":
+        case let identifier where identifier.hasSuffix(".KeepDownloadedAction"):
             return performKeepDownloadedAction(
                 keepDownloaded: true,
                 onItemsWithIdentifiers: itemIdentifiers,
                 completionHandler: completionHandler
             )
-        case "com.nextcloud.desktopclient.FileProviderExt.AutoEvictAction":
+        case let identifier where identifier.hasSuffix(".AutoEvictAction"):
             return performKeepDownloadedAction(
                 keepDownloaded: false,
                 onItemsWithIdentifiers: itemIdentifiers,
                 completionHandler: completionHandler
             )
-        case "com.nextcloud.desktopclient.FileProviderExt.EvictAction":
+        case let identifier where identifier.hasSuffix(".EvictAction"):
             return performEvictAction(
                 onItemsWithIdentifiers: itemIdentifiers,
                 completionHandler: completionHandler

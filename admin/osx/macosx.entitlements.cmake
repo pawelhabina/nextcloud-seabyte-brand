@@ -12,7 +12,7 @@
 	<true/>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>@DEVELOPMENT_TEAM@.@APPLICATION_REV_DOMAIN@</string>
+		<string>@MACOS_APP_GROUP@</string>
 	</array>
 	<key>com.apple.security.temporary-exception.mach-lookup.global-name</key>
 	<array>

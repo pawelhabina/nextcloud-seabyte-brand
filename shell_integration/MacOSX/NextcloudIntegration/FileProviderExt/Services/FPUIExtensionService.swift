@@ -7,9 +7,12 @@ import NextcloudKit
 ///
 /// The descriptive identifier for the service exposed at certain locations.
 ///
-/// This does not need to be branded because it is scoped by the app-specific file provider domains in the file system already.
+/// The identifier is derived from the centrally supplied application reverse
+/// domain so branded clients never share an XPC service name.
 ///
-let fpUiExtensionServiceName = NSFileProviderServiceName("com.nextcloud.desktopclient.FPUIExtensionService")
+let fpUiExtensionServiceName = NSFileProviderServiceName(
+    "\((Bundle.main.object(forInfoDictionaryKey: "OCApplicationReverseDomain") as? String) ?? "pl.seabyte.cloud").FPUIExtensionService"
+)
 
 ///
 /// The requirements of the service exposed and dedicated to the file provider user interface extension.

@@ -101,11 +101,12 @@
             <key>CFBundleURLSchemes</key>
             <array>
                 <string>@APPLICATION_URI_HANDLER_SCHEME@</string>
+                <string>@BRAND_URI_HANDLER_ALIAS@</string>
             </array>
         </dict>
     </array>
     <key>NCFPKAppGroupIdentifier</key>
-    <string>@DEVELOPMENT_TEAM@.@APPLICATION_REV_DOMAIN@</string>
+    <string>@MACOS_APP_GROUP@</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

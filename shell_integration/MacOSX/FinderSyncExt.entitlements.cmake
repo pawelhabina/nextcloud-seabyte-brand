@@ -6,7 +6,7 @@
 	<true/>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>@DEVELOPMENT_TEAM@.@APPLICATION_REV_DOMAIN@</string>
+		<string>@MACOS_APP_GROUP@</string>
 	</array>
 @DEBUG_ENTITLEMENTS@
 </dict>

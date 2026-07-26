@@ -11,7 +11,7 @@ if [ -x "$(command -v pluginkit)" ]; then
     # Since El Capitan we need to sleep #4650
     sleep 10s
     # enable it
-    pluginkit -e use -i @APPLICATION_REV_DOMAIN@.FinderSyncExt
+    pluginkit -e use -i @MACOS_FINDER_EXTENSION_BUNDLE_ID@
 fi
 
 # Remove legacy LaunchAgent plist from all users if present, became obsolete with version 33.0.0

@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
-	<string>$(OC_APPLICATION_REV_DOMAIN).$(PRODUCT_NAME:rfc1034identifier)</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -27,7 +27,7 @@
 	<key>LSUIElement</key>
 	<true/>
 	<key>NCApplicationGroupIdentifier</key>
-	<string>$(DEVELOPMENT_TEAM).$(OC_APPLICATION_REV_DOMAIN)</string>
+	<string>$(OC_APPLICATION_GROUP)</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

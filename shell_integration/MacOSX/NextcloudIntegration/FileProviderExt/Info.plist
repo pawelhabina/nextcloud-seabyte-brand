@@ -12,6 +12,8 @@
 	</dict>
 	<key>CFBundleDisplayName</key>
 	<string>$(OC_APPLICATION_NAME) File Provider</string>
+	<key>OCApplicationReverseDomain</key>
+	<string>$(OC_APPLICATION_REV_DOMAIN)</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -41,7 +43,7 @@
 				<key>NSExtensionFileProviderActionActivationRule</key>
 				<string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayKeepDownloaded == true ).@count &gt; 0</string>
 				<key>NSExtensionFileProviderActionIdentifier</key>
-				<string>com.nextcloud.desktopclient.FileProviderExt.KeepDownloadedAction</string>
+				<string>$(OC_APPLICATION_REV_DOMAIN).fileprovider.KeepDownloadedAction</string>
 				<key>NSExtensionFileProviderActionName</key>
 				<string>Always keep downloaded</string>
 			</dict>
@@ -49,7 +51,7 @@
 				<key>NSExtensionFileProviderActionActivationRule</key>
 				<string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayAllowAutoEvicting == true ).@count &gt; 0</string>
 				<key>NSExtensionFileProviderActionIdentifier</key>
-				<string>com.nextcloud.desktopclient.FileProviderExt.AutoEvictAction</string>
+				<string>$(OC_APPLICATION_REV_DOMAIN).fileprovider.AutoEvictAction</string>
 				<key>NSExtensionFileProviderActionName</key>
 				<string>Allow automatic freeing up space</string>
 			</dict>
@@ -57,7 +59,7 @@
 				<key>NSExtensionFileProviderActionActivationRule</key>
 				<string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayEvict == true ).@count &gt; 0</string>
 				<key>NSExtensionFileProviderActionIdentifier</key>
-				<string>com.nextcloud.desktopclient.FileProviderExt.EvictAction</string>
+				<string>$(OC_APPLICATION_REV_DOMAIN).fileprovider.EvictAction</string>
 				<key>NSExtensionFileProviderActionName</key>
 				<string>Remove download</string>
 			</dict>
@@ -65,7 +67,7 @@
 				<key>NSExtensionFileProviderActionActivationRule</key>
 				<string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayFileActions == true ).@count &gt; 0</string>
 				<key>NSExtensionFileProviderActionIdentifier</key>
-				<string>com.nextcloud.desktopclient.FileProviderExt.FileActionsAction</string>
+				<string>$(OC_APPLICATION_REV_DOMAIN).fileprovider.FileActionsAction</string>
 				<key>NSExtensionFileProviderActionName</key>
 				<string>File actions</string>
 			</dict>
@@ -75,7 +77,7 @@
 		<key>NSExtensionFileProviderAllowsUserControlledEviction</key>
 		<false/>
 		<key>NSExtensionFileProviderDocumentGroup</key>
-		<string>$(DEVELOPMENT_TEAM).$(OC_APPLICATION_REV_DOMAIN)</string>
+		<string>$(OC_APPLICATION_GROUP)</string>
 		<key>NSExtensionFileProviderSupportsEnumeration</key>
 		<true/>
 		<key>NSExtensionPointIdentifier</key>

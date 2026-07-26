@@ -352,7 +352,7 @@ public:
         const auto domainId = QUuid::createUuid().toString(QUuid::WithoutBraces);
         // Replace dots with one-dot leader (U+2024) to prevent Finder from treating
         // folders as bundles when the display name contains extensions like ".app"
-        auto domainDisplayName = account->displayName();
+        auto domainDisplayName = QString::fromUtf8(BRAND_FOLDER_NAME);
         domainDisplayName.replace('.', QChar(0x2024));
         NSFileProviderDomain * const domain = [[NSFileProviderDomain alloc] initWithIdentifier:domainId.toNSString() displayName:domainDisplayName.toNSString()];
         domain.supportsSyncingTrash = YES;

@@ -64,13 +64,13 @@ class DocumentActionViewController: FPUIActionExtensionViewController {
         logger?.info("Preparing action: \(actionIdentifier)")
 
         switch (actionIdentifier) {
-            case "com.nextcloud.desktopclient.FileProviderUIExt.ShareAction":
+            case let identifier where identifier.hasSuffix(".ShareAction"):
                 prepare(childViewController: ShareViewController(itemIdentifiers, serviceResolver: serviceResolver, log: log))
-            case "com.nextcloud.desktopclient.FileProviderUIExt.LockFileAction":
+            case let identifier where identifier.hasSuffix(".LockFileAction"):
                 prepare(childViewController: LockViewController(itemIdentifiers, locking: true, serviceResolver: serviceResolver, log: log))
-            case "com.nextcloud.desktopclient.FileProviderUIExt.UnlockFileAction":
+            case let identifier where identifier.hasSuffix(".UnlockFileAction"):
                 prepare(childViewController: LockViewController(itemIdentifiers, locking: false, serviceResolver: serviceResolver, log: log))
-            case "com.nextcloud.desktopclient.FileProviderUIExt.EvictAction":
+            case let identifier where identifier.hasSuffix(".EvictAction"):
                 evict(itemsWithIdentifiers: itemIdentifiers, inDomain: domain);
                 extensionContext.completeRequest();
             default:

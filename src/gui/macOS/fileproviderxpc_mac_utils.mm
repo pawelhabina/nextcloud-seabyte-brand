@@ -13,7 +13,7 @@
 #include "gui/accountmanager.h"
 
 namespace {
-const char *const clientCommunicationServiceName = "com.nextcloud.desktopclient.ClientCommunicationService";
+const char *const clientCommunicationServiceName = APPLICATION_REV_DOMAIN ".ClientCommunicationService";
 NSString *const nsClientCommunicationServiceName = [NSString stringWithUTF8String:clientCommunicationServiceName];
 }
 
