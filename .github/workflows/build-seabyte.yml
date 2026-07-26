@@ -67,6 +67,9 @@ jobs:
     needs: branding
     runs-on: windows-2022
     timeout-minutes: 180
+    env:
+      WINDOWS_PFX_BASE64: ${{ secrets.WINDOWS_PFX_BASE64 }}
+      WINDOWS_PFX_PASSWORD: ${{ secrets.WINDOWS_PFX_PASSWORD }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -83,11 +86,8 @@ jobs:
           key: windows-seabyte-craft-${{ hashFiles('craftmaster.ini', 'branding/seabyte-branding.cmake') }}
           restore-keys: windows-seabyte-craft-
       - name: Import Authenticode certificate
-        if: ${{ secrets.WINDOWS_PFX_BASE64 != '' && secrets.WINDOWS_PFX_PASSWORD != '' }}
+        if: ${{ env.WINDOWS_PFX_BASE64 != '' && env.WINDOWS_PFX_PASSWORD != '' }}
         shell: pwsh
-        env:
-          WINDOWS_PFX_BASE64: ${{ secrets.WINDOWS_PFX_BASE64 }}
-          WINDOWS_PFX_PASSWORD: ${{ secrets.WINDOWS_PFX_PASSWORD }}
         run: |
           $pfxPath = Join-Path $env:RUNNER_TEMP "seabyte-signing.pfx"
           [IO.File]::WriteAllBytes($pfxPath, [Convert]::FromBase64String($env:WINDOWS_PFX_BASE64))
@@ -116,6 +116,8 @@ jobs:
       SEABYTE_APPLE_ID: ${{ secrets.APPLE_ID }}
       SEABYTE_APPLE_PASSWORD: ${{ secrets.APPLE_APP_PASSWORD }}
       SEABYTE_APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      MACOS_CERTIFICATE_BASE64: ${{ secrets.MACOS_CERTIFICATE_BASE64 }}
+      MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -132,10 +134,8 @@ jobs:
       - name: Install packaging prerequisites
         run: brew install create-dmg inkscape
       - name: Import Apple signing certificate
-        if: ${{ secrets.MACOS_CERTIFICATE_BASE64 != '' && secrets.MACOS_CERTIFICATE_PASSWORD != '' && secrets.MACOS_CODE_SIGN_IDENTITY != '' }}
+        if: ${{ env.MACOS_CERTIFICATE_BASE64 != '' && env.MACOS_CERTIFICATE_PASSWORD != '' && env.SEABYTE_MAC_CODE_SIGN_IDENTITY != '' }}
         env:
-          MACOS_CERTIFICATE_BASE64: ${{ secrets.MACOS_CERTIFICATE_BASE64 }}
-          MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
           KEYCHAIN_PASSWORD: ${{ github.run_id }}-${{ github.run_attempt }}
         run: |
           certificate_path="$RUNNER_TEMP/seabyte-signing.p12"
